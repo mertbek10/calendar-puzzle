@@ -1,2 +1,2 @@
-# calender-puzzle
-Calender puzzle 
+# calendar-puzzle
+Calendar puzzle 
