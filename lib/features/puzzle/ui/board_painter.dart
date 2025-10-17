@@ -160,7 +160,7 @@ class BoardPainter extends CustomPainter {
 
     final brand = TextPainter(
       text: const TextSpan(
-        text: "YURTPAL PUZZLE",
+        text: "YurtPal Calendar Puzzle",
         style: TextStyle(
           color: Color(0xFF705D47),
           fontWeight: FontWeight.w800,
