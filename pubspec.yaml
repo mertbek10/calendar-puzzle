@@ -62,7 +62,7 @@ flutter:
   uses-material-design: true
 
   assets:
-  -  assets/data/dp_calendar_solutions.json
+  -  assets/data/dp_calendar_solutions_full.json
   
 
   # To add assets to your application, add an assets section, like this:
