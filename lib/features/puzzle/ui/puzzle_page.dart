@@ -4,8 +4,11 @@ import 'package:calender_puzzle/features/puzzle/state/puzzle_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'board_painter.dart';
+import 'board_widget.dart';
 import 'hud.dart';
 import 'piece_widget.dart';
+import '../logic/board_geometry.dart';
+import '../logic/board_geometry.dart';
 
 class PuzzlePage extends StatelessWidget {
   const PuzzlePage({super.key});
@@ -40,8 +43,15 @@ String trWeekdayAbbr(int w) =>
     // Dart: 1=Pzt .. 7=Paz
     ['', 'PZT', 'SAL', 'ÇAR', 'PER', 'CUM', 'CMT', 'PAZ'][w];
 
-class _PuzzleView extends StatelessWidget {
+class _PuzzleView extends StatefulWidget {
   const _PuzzleView();
+
+  @override
+  State<_PuzzleView> createState() => _PuzzleViewState();
+}
+
+class _PuzzleViewState extends State<_PuzzleView> {
+  double? _boardUnit;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +90,13 @@ class _PuzzleView extends StatelessWidget {
                   builder: (context, c) {
                     final width = c.maxWidth * 0.92;
                     final height = c.maxHeight * 0.96;
+                    final size = Size(width, height);
+                    // Board hücre boyutunu hesaplayıp tepsiye iletelim
+                    final unit = BoardGeometry.cellSizeFromSize(size);
+                    if (_boardUnit != unit)
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        setState(() => _boardUnit = unit);
+                      });
 
                     return SizedBox(
                       width: width,
@@ -91,13 +108,10 @@ class _PuzzleView extends StatelessWidget {
                           final m = state.currentDate.month;
                           final wd = state.currentDate.weekday; // 1..7
 
-                          return CustomPaint(
-                            painter: BoardPainter(
-                              day: d,
-                              monthAbbr: trMonthAbbr(m),
-                              weekdayAbbr: trWeekdayAbbr(wd),
-                            ),
-                            isComplex: true,
+                          return BoardWidget(
+                            day: d,
+                            monthAbbr: trMonthAbbr(m),
+                            weekdayAbbr: trWeekdayAbbr(wd),
                           );
                         },
                       ),
@@ -116,21 +130,21 @@ class _PuzzleView extends StatelessWidget {
                   horizontal: 12,
                   vertical: 8,
                 ),
-                child: const Wrap(
+                child: Wrap(
                   alignment: WrapAlignment.center,
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    PieceWidget(code: "A"),
-                    PieceWidget(code: "B"),
-                    PieceWidget(code: "C"),
-                    PieceWidget(code: "D"),
-                    PieceWidget(code: "E"),
-                    PieceWidget(code: "F"),
-                    PieceWidget(code: "G"),
-                    PieceWidget(code: "H"),
-                    PieceWidget(code: "I"),
-                    PieceWidget(code: "J"),
+                    PieceWidget(code: "A", boardUnit: _boardUnit),
+                    PieceWidget(code: "B", boardUnit: _boardUnit),
+                    PieceWidget(code: "C", boardUnit: _boardUnit),
+                    PieceWidget(code: "D", boardUnit: _boardUnit),
+                    PieceWidget(code: "E", boardUnit: _boardUnit),
+                    PieceWidget(code: "F", boardUnit: _boardUnit),
+                    PieceWidget(code: "G", boardUnit: _boardUnit),
+                    PieceWidget(code: "H", boardUnit: _boardUnit),
+                    PieceWidget(code: "I", boardUnit: _boardUnit),
+                    PieceWidget(code: "J", boardUnit: _boardUnit),
                   ],
                 ),
               ),

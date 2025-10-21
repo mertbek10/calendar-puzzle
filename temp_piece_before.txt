@@ -1,0 +1,57 @@
+﻿import 'package:calender_puzzle/features/puzzle/data/piece_defs.dart';
+import 'package:flutter/material.dart';
+import 'piece_painter.dart';
+
+class PieceWidget extends StatefulWidget {
+  final String code; // "A".."J"
+  final double? trayUnit; // tepsideki kare boyutu (UI Ã¶nizleme iÃ§in)
+
+  const PieceWidget({super.key, required this.code, this.trayUnit});
+
+  @override
+  State<PieceWidget> createState() => _PieceWidgetState();
+}
+
+class _PieceWidgetState extends State<PieceWidget> {
+  bool mirrored = false;
+  int quarterTurns = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final shape = PieceDefs.shapeOf(widget.code);
+    final rows = shape.length;
+    final cols = shape[0].length;
+
+    // Tepside Ã¶nizleme iÃ§in birim (board ile birebir olmak zorunda deÄŸil),
+    // ama dropâ€™ta BOARD hÃ¼cre boyutunu kullanacaÄŸÄ±z.
+    final unit = widget.trayUnit ?? 26.0;
+
+    final w = cols * unit;
+    final h = rows * unit;
+
+    return GestureDetector(
+      // 2 parmak â†’ ayna
+      onScaleStart: (d) {
+        if (d.pointerCount == 2) setState(() => mirrored = !mirrored);
+      },
+      // uzun bas â†’ 90Â° dÃ¶ndÃ¼r
+      onLongPress: () {
+        setState(() => quarterTurns = (quarterTurns + 1) % 4);
+      },
+      child: SizedBox(
+        width: w,
+        height: h,
+        child: CustomPaint(
+          painter: PiecePainter(
+            shape: shape,
+            mirrored: mirrored,
+            quarterTurns: quarterTurns,
+            unit: unit,
+            fill: const Color(0xFFE7D9C2), // dÃ¼z aÃ§Ä±k ahÅŸap
+          ),
+        ),
+      ),
+    );
+  }
+}
+

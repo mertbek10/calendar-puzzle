@@ -1,0 +1,24 @@
+﻿import 'dart:math';
+
+class BoardGeometry {
+  static const rows = 8;
+  static const cols = 7;
+
+  // PDFâ€™teki etiketlerin birebir TR kÄ±saltmalarÄ± (Ã‡AR, NÄ°S, AÄU, EKÄ°)
+  static const labels = [
+    ["1", "2", "3", "4", "OCA", "â™¥", "PZT"],
+    ["5", "6", "7", "8", "SUB", "MAR", "SAL"],
+    ["9", "10", "11", "12", "NÄ°S", "MAY", "Ã‡AR"],
+    ["13", "14", "15", "16", "HAZ", "TEM", "PER"],
+    ["17", "18", "19", "20", "AÄU", "EYL", "CUM"],
+    ["21", "22", "23", "24", "EKÄ°", "KAS", "CMT"],
+    ["25", "26", "27", "28", "ARA", "â™¥", "PAZ"],
+    ["29", "30", "31", "", "", "", ""],
+  ];
+
+  // Grid alanÄ± iÃ§inde hÃ¼cre Ã¶lÃ§Ã¼sÃ¼nÃ¼ hesaplamak iÃ§in yardÄ±mcÄ±:
+  static double cellSize(double gridWidth, double gridHeight) {
+    return min(gridWidth / cols, gridHeight / rows);
+  }
+}
+

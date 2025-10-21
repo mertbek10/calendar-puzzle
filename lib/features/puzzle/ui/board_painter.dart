@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import '../logic/board_geometry.dart';
 
 class BoardPainter extends CustomPainter {
   BoardPainter({
@@ -45,13 +46,7 @@ class BoardPainter extends CustomPainter {
     canvas.drawRRect(outerRect, Paint()..color = frameColor);
 
     // İç pano
-    const edgeInset = 14.0;
-    final inner = Rect.fromLTWH(
-      edgeInset,
-      edgeInset,
-      size.width - edgeInset * 2,
-      size.height - edgeInset * 2,
-    );
+    final inner = BoardGeometry.innerRect(size);
     final innerRRect = RRect.fromRectAndRadius(
       inner,
       Radius.circular(innerRadius),
@@ -75,14 +70,7 @@ class BoardPainter extends CustomPainter {
     );
 
     // Grid alanı (8x7) — alt logosu artık grid içinde sağ-alttaki 3 boş karede
-    const gridPad = 12.0;
-    final grid = Rect.fromLTWH(
-      inner.left + gridPad,
-      inner.top + gridPad,
-      inner.width - gridPad * 2,
-      inner.height - gridPad * 2,
-    );
-
+    final grid = BoardGeometry.squareGridRect(size);
     final cellW = grid.width / cols;
     final cellH = grid.height / rows;
 
